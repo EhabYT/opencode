@@ -194,7 +194,10 @@ const layer = Layer.effect(
               defaults,
               Permission.fromConfig({
                 question: "deny",
-                edit: "deny",
+                edit: {
+                  "*": "deny",
+                  ".opencode/TASKS.json": "allow",
+                },
                 task: "allow",
               }),
               user,
