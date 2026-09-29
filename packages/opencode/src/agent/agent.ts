@@ -226,12 +226,18 @@ const layer = Layer.effect(
           qa: {
             name: "qa",
             description:
-              "Quality assurance agent that reviews changes, identifies focused tests, and reports a pass or rejection.",
+              "Quality assurance agent that reviews changes, generates focused tests, and reports a pass or rejection.",
             permission: Permission.merge(
               defaults,
               Permission.fromConfig({
                 question: "deny",
-                edit: "deny",
+                edit: {
+                  "*": "deny",
+                  "**/*.test.ts": "allow",
+                  "**/*.test.tsx": "allow",
+                  "**/*.spec.ts": "allow",
+                  "**/*.spec.tsx": "allow",
+                },
                 task: "deny",
               }),
               user,
