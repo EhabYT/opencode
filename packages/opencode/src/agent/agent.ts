@@ -12,6 +12,11 @@ import { ProviderTransform } from "@/provider/transform"
 import PROMPT_GENERATE from "./generate.txt"
 import PROMPT_COMPACTION from "./prompt/compaction.txt"
 import PROMPT_EXPLORE from "./prompt/explore.txt"
+import PROMPT_ARCHITECT from "./prompt/architect.txt"
+import PROMPT_AUTONOMOUS from "./prompt/autonomous.txt"
+import PROMPT_DEVELOPER from "./prompt/developer.txt"
+import PROMPT_QA from "./prompt/qa.txt"
+import PROMPT_DEBUGGER from "./prompt/debugger.txt"
 import PROMPT_SUMMARY from "./prompt/summary.txt"
 import PROMPT_TITLE from "./prompt/title.txt"
 import { Permission } from "@/permission"
@@ -145,11 +150,13 @@ const layer = Layer.effect(
             permission: Permission.merge(
               defaults,
               Permission.fromConfig({
-                question: "allow",
+                question: "deny",
                 plan_enter: "allow",
+                task: "allow",
               }),
               user,
             ),
+            prompt: PROMPT_AUTONOMOUS,
             mode: "primary",
             native: true,
           },
@@ -177,6 +184,73 @@ const layer = Layer.effect(
               user,
             ),
             mode: "primary",
+            native: true,
+          },
+          architect: {
+            name: "architect",
+            description: "Lead coordinator that decomposes work, delegates specialized agents, and signs off only after verification.",
+            permission: Permission.merge(
+              defaults,
+              Permission.fromConfig({
+                question: "deny",
+                edit: "deny",
+                task: "allow",
+              }),
+              user,
+            ),
+            prompt: PROMPT_ARCHITECT,
+            options: {},
+            mode: "subagent",
+            native: true,
+          },
+          developer: {
+            name: "developer",
+            description: "Senior implementation agent that makes focused production changes and runs targeted checks.",
+            permission: Permission.merge(
+              defaults,
+              Permission.fromConfig({
+                question: "deny",
+                task: "deny",
+              }),
+              user,
+            ),
+            prompt: PROMPT_DEVELOPER,
+            options: {},
+            mode: "subagent",
+            native: true,
+          },
+          qa: {
+            name: "qa",
+            description: "Quality assurance agent that reviews changes, writes focused tests, and reports a pass or rejection.",
+            permission: Permission.merge(
+              defaults,
+              Permission.fromConfig({
+                question: "deny",
+                edit: "deny",
+                task: "deny",
+              }),
+              user,
+            ),
+            prompt: PROMPT_QA,
+            options: {},
+            mode: "subagent",
+            native: true,
+          },
+          debugger: {
+            name: "debugger",
+            description: "Environment and runtime verification agent that reproduces failures and reports actionable fixes.",
+            permission: Permission.merge(
+              defaults,
+              Permission.fromConfig({
+                question: "deny",
+                edit: "deny",
+                task: "deny",
+              }),
+              user,
+            ),
+            prompt: PROMPT_DEBUGGER,
+            options: {},
+            mode: "subagent",
             native: true,
           },
           general: {
