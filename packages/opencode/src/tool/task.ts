@@ -63,13 +63,15 @@ export const Parameters = Schema.Struct({
 
 function renderOutput(input: {
   sessionID: SessionID
+  agent: string
   state: "running" | "completed" | "error"
   summary?: string
   text: string
 }) {
   const tag = input.state === "error" ? "task_error" : "task_result"
   return [
-    `<task id="${input.sessionID}" state="${input.state}">`,
+    `[${input.agent}]`,
+    `<task id="${input.sessionID}" agent="${input.agent}" state="${input.state}">`,
     ...(input.summary ? [`<summary>${input.summary}</summary>`] : []),
     `<${tag}>`,
     input.text,
@@ -240,6 +242,7 @@ export const TaskTool = Tool.define(
                 synthetic: true,
                 text: renderOutput({
                   sessionID: nextSession.id,
+                  agent: params.subagent_type,
                   state,
                   summary:
                     state === "completed"
@@ -274,6 +277,7 @@ export const TaskTool = Tool.define(
           },
           output: renderOutput({
             sessionID: nextSession.id,
+            agent: params.subagent_type,
             state: "running",
             summary: "Background task updated",
             text: BACKGROUND_UPDATED,
@@ -306,6 +310,7 @@ export const TaskTool = Tool.define(
           },
           output: renderOutput({
             sessionID: nextSession.id,
+            agent: params.subagent_type,
             state: "running",
             summary: "Background task started",
             text: BACKGROUND_STARTED,
@@ -341,7 +346,12 @@ export const TaskTool = Tool.define(
             return {
               title: params.description,
               metadata,
-              output: renderOutput({ sessionID: nextSession.id, state: "completed", text: result?.output ?? "" }),
+              output: renderOutput({
+                sessionID: nextSession.id,
+                agent: params.subagent_type,
+                state: "completed",
+                text: result?.output ?? "",
+              }),
             }
           }),
         (_, exit) =>
