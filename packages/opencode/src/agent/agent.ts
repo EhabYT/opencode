@@ -188,7 +188,8 @@ const layer = Layer.effect(
           },
           architect: {
             name: "architect",
-            description: "Lead coordinator that decomposes work, delegates specialized agents, and signs off only after verification.",
+            description:
+              "Lead coordinator that decomposes work, delegates specialized agents, and signs off only after verification.",
             permission: Permission.merge(
               defaults,
               Permission.fromConfig({
@@ -221,7 +222,8 @@ const layer = Layer.effect(
           },
           qa: {
             name: "qa",
-            description: "Quality assurance agent that reviews changes, writes focused tests, and reports a pass or rejection.",
+            description:
+              "Quality assurance agent that reviews changes, identifies focused tests, and reports a pass or rejection.",
             permission: Permission.merge(
               defaults,
               Permission.fromConfig({
@@ -238,7 +240,8 @@ const layer = Layer.effect(
           },
           debugger: {
             name: "debugger",
-            description: "Environment and runtime verification agent that reproduces failures and reports actionable fixes.",
+            description:
+              "Environment and runtime verification agent that reproduces failures and reports actionable fixes.",
             permission: Permission.merge(
               defaults,
               Permission.fromConfig({
